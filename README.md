@@ -166,21 +166,29 @@ CRA requests the **minimum permissions** required:
 
 ```
 chatgpt-reading-assistant/
-├── manifest.json           # Extension manifest (MV3)
-├── content.js              # Main content script (~1,280 lines)
-│   ├── CRADom              #   DOM selectors with multi-fallback
-│   ├── CRAModuleRegistry   #   Module lifecycle management
-│   ├── CRAMessageScanner   #   MutationObserver message detection
-│   ├── CRAInputIntegration #   ProseMirror input box integration
-│   ├── CRASelectionTracker #   Text selection event tracking
-│   ├── CRASelectionToolbar #   Floating toolbar UI
-│   └── CRACitationClipboard#   Citation panel UI + storage
-├── content.css             # Theme-aware styles (dark/light)
-├── background.js           # Service worker (message relay)
-├── popup.html/css/js       # Extension settings popup
-└── utils/
-    ├── storage.js          # CRAStorage abstraction
-    └── event-bus.js        # Lightweight pub/sub
+├── manifest.json               # Extension manifest (MV3)
+├── utils/
+│   ├── storage.js              # CRAStorage — chrome.storage abstraction
+│   ├── event-bus.js            # CRAEventBus — pub/sub with type checking
+│   ├── events.js               # CRAEvents — centralized event constants
+│   ├── ui-helpers.js           # Toast notifications, HTML escaping
+│   └── markdown.js             # HTML-to-Markdown conversion
+├── content/
+│   ├── core/
+│   │   ├── dom.js              # CRADom — DOM selectors (multi-fallback)
+│   │   ├── registry.js         # CRAModuleRegistry — lifecycle + DI
+│   │   ├── runtime-handler.js  # chrome.runtime message routing
+│   │   ├── spa-observer.js     # SPA navigation detection
+│   │   └── bootstrap.js        # Main orchestrator (pure orchestration)
+│   └── modules/
+│       ├── message-scanner.js  # MutationObserver message detection
+│       ├── input-integration.js# ProseMirror input box integration
+│       ├── selection-tracker.js# Text selection event tracking
+│       ├── selection-toolbar.js# Floating toolbar UI
+│       └── citation-clipboard.js# Citation panel UI + storage
+├── content.css                 # Theme-aware styles (dark/light)
+├── background.js               # Service worker (message relay)
+└── popup.html/css/js           # Extension settings popup
 ```
 
 ## FAQ

@@ -21,6 +21,11 @@ window.CRAEventBus = (() => {
   }
 
   function emit(event, data) {
+    // Warn on unknown events (helps catch typos and undeclared events)
+    if (window.CRAEvents && !Object.values(window.CRAEvents).includes(event)) {
+      console.warn(`[CRA EventBus] Unknown event: "${event}" — add it to CRAEvents`);
+    }
+
     const set = listeners.get(event);
     if (set) {
       for (const cb of set) {

@@ -34,12 +34,31 @@ Thank you for your interest in contributing! This guide covers everything you ne
 ## Project Structure
 
 ```
-content.js          Main content script (all modules in one file via IIFE)
+utils/
+  storage.js          Chrome storage abstraction (CRAStorage)
+  event-bus.js        Lightweight pub/sub (CRAEventBus)
+  events.js           Event name constants (CRAEvents)
+  ui-helpers.js       Shared UI utilities — showToast, escapeHtml
+  markdown.js         HTML-to-Markdown conversion
+
+content/
+  core/
+    dom.js            ChatGPT DOM selectors with multi-fallback (CRADom)
+    registry.js       Module lifecycle + dependency injection (CRAModuleRegistry)
+    runtime-handler.js  chrome.runtime message handling
+    spa-observer.js   SPA navigation detection (URL polling + popstate)
+    bootstrap.js      Main orchestrator — pure orchestration, no business logic
+
+  modules/
+    message-scanner.js    MutationObserver message detection
+    input-integration.js  ProseMirror input box text insertion
+    selection-tracker.js  Text selection event tracking
+    selection-toolbar.js  Floating toolbar UI on text selection
+    citation-clipboard.js Citation panel UI + storage
+
 content.css         Theme-aware styles (CSS variables for dark/light)
 popup.html/css/js   Extension settings popup
 background.js       Service worker (message relay only)
-utils/storage.js    Chrome storage abstraction
-utils/event-bus.js  Lightweight pub/sub event system
 manifest.json       Extension manifest (MV3)
 ```
 
@@ -149,7 +168,8 @@ Key decisions and their rationale:
 
 | Decision | Rationale |
 |----------|-----------|
-| Single `content.js` file | No bundler needed; simpler to load and debug |
+| Modular file structure | Each module in its own file; loaded via manifest.json `js` array |
+| Factory + dependency injection | Modules receive deps via create(deps); no hidden window.XXX reads |
 | IIFE module pattern | Clean scoping without ES modules (content scripts can't use `import`) |
 | Multi-fallback selectors | ChatGPT's DOM changes frequently; resilience over elegance |
 | `execCommand('insertText')` | Only reliable way to insert into ProseMirror editor |

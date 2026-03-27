@@ -20,7 +20,23 @@
   "content_scripts": [
     {
       "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
-      "js": ["utils/storage.js", "utils/event-bus.js", "content.js"],
+      "js": [
+        "utils/storage.js",
+        "utils/event-bus.js",
+        "utils/events.js",
+        "utils/ui-helpers.js",
+        "utils/markdown.js",
+        "content/core/dom.js",
+        "content/core/registry.js",
+        "content/modules/message-scanner.js",
+        "content/modules/input-integration.js",
+        "content/modules/selection-tracker.js",
+        "content/modules/selection-toolbar.js",
+        "content/modules/citation-clipboard.js",
+        "content/core/runtime-handler.js",
+        "content/core/spa-observer.js",
+        "content/core/bootstrap.js"
+      ],
       "css": ["content.css"],
       "run_at": "document_idle"
     }
