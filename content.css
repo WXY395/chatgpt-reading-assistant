@@ -1,0 +1,128 @@
+/* ChatGPT Reading Assistant — Content Styles */
+
+/* ── CRA Namespace ── */
+.cra-hidden {
+  display: none !important;
+}
+
+/* ── Selection highlight (future) ── */
+[data-cra-index] {
+  /* marker for scanned messages, no visual change */
+}
+
+/* ── Floating toolbar placeholder ── */
+.cra-selection-toolbar {
+  position: fixed;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: var(--cra-toolbar-bg, #2f2f2f);
+  color: var(--cra-toolbar-fg, #fff);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  font-size: 13px;
+  line-height: 1;
+  pointer-events: auto;
+  user-select: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.cra-selection-toolbar.cra-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cra-selection-toolbar button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.1s;
+}
+
+.cra-selection-toolbar button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.cra-selection-toolbar .cra-separator {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 2px;
+}
+
+/* ── Citation clipboard panel placeholder ── */
+.cra-citation-panel {
+  position: fixed;
+  top: 80px;
+  right: 16px;
+  width: 320px;
+  max-height: calc(100vh - 120px);
+  z-index: 9999;
+  border-radius: 12px;
+  background: var(--cra-panel-bg, #1e1e1e);
+  color: var(--cra-panel-fg, #e0e0e0);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.cra-citation-panel.cra-visible {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* ── Light theme overrides ── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --cra-toolbar-bg: #ffffff;
+    --cra-toolbar-fg: #1a1a1a;
+    --cra-panel-bg: #ffffff;
+    --cra-panel-fg: #1a1a1a;
+  }
+
+  .cra-selection-toolbar {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .cra-selection-toolbar button:hover {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  .cra-selection-toolbar .cra-separator {
+    background: rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* ChatGPT dark theme detection via body/html class */
+html[class*="dark"] {
+  --cra-toolbar-bg: #2f2f2f;
+  --cra-toolbar-fg: #ffffff;
+  --cra-panel-bg: #1e1e1e;
+  --cra-panel-fg: #e0e0e0;
+}
+
+html:not([class*="dark"]) {
+  --cra-toolbar-bg: #ffffff;
+  --cra-toolbar-fg: #1a1a1a;
+  --cra-panel-bg: #ffffff;
+  --cra-panel-fg: #1a1a1a;
+}

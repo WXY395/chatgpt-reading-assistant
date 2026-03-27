@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header class="popup-header">
+      <h1>CRA</h1>
+      <span class="version" id="version"></span>
+    </header>
+
+    <section class="popup-section">
+      <label class="toggle-row">
+        <span>啟用擴充功能</span>
+        <input type="checkbox" id="toggleEnabled" checked>
+      </label>
+    </section>
+
+    <section class="popup-section">
+      <h2>模組</h2>
+      <label class="toggle-row">
+        <span>選取工具列</span>
+        <input type="checkbox" id="toggleSelectionToolbar" checked>
+      </label>
+      <label class="toggle-row">
+        <span>引文剪貼簿</span>
+        <input type="checkbox" id="toggleQuotePanel" checked>
+      </label>
+    </section>
+
+    <section class="popup-section">
+      <h2>診斷</h2>
+      <button id="btnDiagnostics" class="btn">查看診斷資訊</button>
+      <pre id="diagnosticsOutput" class="diagnostics-output"></pre>
+    </section>
+
+    <section class="popup-section">
+      <h2>資料</h2>
+      <div class="btn-row">
+        <button id="btnExportQuotes" class="btn">匯出引文</button>
+        <button id="btnClearQuotes" class="btn btn-danger">清除引文</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
