@@ -1,28 +1,52 @@
 /* ChatGPT Reading Assistant — Content Styles */
 
-/* ── CSS Variables (theme-aware) ── */
-html[class*="dark"] {
+/* ── CSS Variables (theme-aware) ──
+   ChatGPT uses class "dark" on <html> for dark mode.
+   Also support data-theme and prefers-color-scheme as fallback. */
+
+/* Dark theme */
+html[class*="dark"],
+html[data-theme="dark"] {
   --cra-toolbar-bg: #2f2f2f;
   --cra-toolbar-fg: #e0e0e0;
   --cra-toolbar-hover: rgba(255, 255, 255, 0.12);
   --cra-separator-color: rgba(255, 255, 255, 0.15);
   --cra-panel-bg: #1e1e1e;
   --cra-panel-fg: #e0e0e0;
-  --cra-toast-bg: #333;
+  --cra-toast-bg: #444;
   --cra-toast-fg: #fff;
-  --cra-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --cra-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --cra-border: rgba(255, 255, 255, 0.08);
 }
 
-html:not([class*="dark"]) {
+/* Light theme */
+html:not([class*="dark"]):not([data-theme="dark"]) {
   --cra-toolbar-bg: #ffffff;
   --cra-toolbar-fg: #1a1a1a;
-  --cra-toolbar-hover: rgba(0, 0, 0, 0.07);
-  --cra-separator-color: rgba(0, 0, 0, 0.12);
+  --cra-toolbar-hover: rgba(0, 0, 0, 0.06);
+  --cra-separator-color: rgba(0, 0, 0, 0.1);
   --cra-panel-bg: #ffffff;
   --cra-panel-fg: #1a1a1a;
   --cra-toast-bg: #333;
   --cra-toast-fg: #fff;
-  --cra-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --cra-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --cra-border: rgba(0, 0, 0, 0.08);
+}
+
+/* System preference fallback */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]):not([class*="light"]) {
+    --cra-toolbar-bg: #2f2f2f;
+    --cra-toolbar-fg: #e0e0e0;
+    --cra-toolbar-hover: rgba(255, 255, 255, 0.12);
+    --cra-separator-color: rgba(255, 255, 255, 0.15);
+    --cra-panel-bg: #1e1e1e;
+    --cra-panel-fg: #e0e0e0;
+    --cra-toast-bg: #444;
+    --cra-toast-fg: #fff;
+    --cra-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    --cra-border: rgba(255, 255, 255, 0.08);
+  }
 }
 
 /* ── CRA Namespace ── */
@@ -47,6 +71,7 @@ html:not([class*="dark"]) {
   border-radius: 10px;
   background: var(--cra-toolbar-bg);
   color: var(--cra-toolbar-fg);
+  border: 1px solid var(--cra-border);
   box-shadow: var(--cra-shadow);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 13px;
@@ -198,6 +223,7 @@ html:not([class*="dark"]) {
   border-radius: 12px;
   background: var(--cra-panel-bg);
   color: var(--cra-panel-fg);
+  border: 1px solid var(--cra-border);
   box-shadow: var(--cra-shadow);
   overflow: hidden;
   display: flex;

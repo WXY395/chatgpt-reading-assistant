@@ -11,14 +11,16 @@
       <span class="version" id="version"></span>
     </header>
 
+    <!-- Master toggle -->
     <section class="popup-section">
-      <label class="toggle-row">
+      <label class="toggle-row toggle-master">
         <span>啟用擴充功能</span>
         <input type="checkbox" id="toggleEnabled" checked>
       </label>
     </section>
 
-    <section class="popup-section">
+    <!-- Module toggles -->
+    <section class="popup-section" id="sectionModules">
       <h2>模組</h2>
       <label class="toggle-row">
         <span>選取工具列</span>
@@ -30,18 +32,22 @@
       </label>
     </section>
 
-    <section class="popup-section">
-      <h2>診斷</h2>
-      <button id="btnDiagnostics" class="btn">查看診斷資訊</button>
-      <pre id="diagnosticsOutput" class="diagnostics-output"></pre>
+    <!-- Citation management -->
+    <section class="popup-section" id="sectionQuotes">
+      <h2>引文管理 <span class="quote-count" id="quoteCount"></span></h2>
+      <div id="quotePreview" class="quote-preview"></div>
+      <div class="btn-row">
+        <button id="btnExportJson" class="btn" title="匯出為 JSON">📦 JSON</button>
+        <button id="btnExportMd" class="btn" title="匯出為 Markdown">📝 MD</button>
+        <button id="btnClearQuotes" class="btn btn-danger" title="清除全部引文">🗑️ 清除</button>
+      </div>
     </section>
 
+    <!-- Diagnostics -->
     <section class="popup-section">
-      <h2>資料</h2>
-      <div class="btn-row">
-        <button id="btnExportQuotes" class="btn">匯出引文</button>
-        <button id="btnClearQuotes" class="btn btn-danger">清除引文</button>
-      </div>
+      <h2>診斷</h2>
+      <button id="btnDiagnostics" class="btn btn-full">查看診斷資訊</button>
+      <pre id="diagnosticsOutput" class="diagnostics-output"></pre>
     </section>
   </div>
 

@@ -169,6 +169,7 @@ const CRAModuleRegistry = (() => {
 
   function initAll(settings) {
     for (const [name, entry] of modules) {
+      if (entry.initialized) continue; // skip already initialized
       try {
         entry.module.init(settings);
         entry.initialized = true;
@@ -282,6 +283,8 @@ const CRAMessageScanner = (() => {
     observer.observe(target, {
       childList: true,
       subtree: true,
+      characterData: false,
+      attributes: false,
     });
 
     // Initial scan
@@ -450,34 +453,42 @@ const CRASelectionTracker = (() => {
   function handleMouseUp() {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-      const selection = window.getSelection();
-      if (!selection || selection.isCollapsed || !selection.toString().trim()) {
-        CRAEventBus.emit('selection:cleared');
-        return;
+      try {
+        const selection = window.getSelection();
+        if (!selection || selection.isCollapsed || !selection.toString().trim()) {
+          CRAEventBus.emit('selection:cleared');
+          return;
+        }
+        if (selection.rangeCount === 0) return;
+
+        const text = selection.toString().trim();
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+
+        // Skip zero-size rects (e.g. collapsed or hidden selections)
+        if (rect.width === 0 && rect.height === 0) return;
+
+        // Check if selection is within conversation area
+        const container = CRADom.getConversationContainer();
+        if (container && !container.contains(range.commonAncestorContainer)) {
+          return; // Selection outside conversation
+        }
+
+        CRAEventBus.emit('selection:made', {
+          text,
+          rect: {
+            top: rect.top,
+            bottom: rect.bottom,
+            left: rect.left,
+            right: rect.right,
+            width: rect.width,
+            height: rect.height,
+          },
+          range,
+        });
+      } catch (e) {
+        // Silently ignore selection errors (e.g. cross-origin iframes)
       }
-
-      const text = selection.toString().trim();
-      const range = selection.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
-
-      // Check if selection is within conversation area
-      const container = CRADom.getConversationContainer();
-      if (container && !container.contains(range.commonAncestorContainer)) {
-        return; // Selection outside conversation
-      }
-
-      CRAEventBus.emit('selection:made', {
-        text,
-        rect: {
-          top: rect.top,
-          bottom: rect.bottom,
-          left: rect.left,
-          right: rect.right,
-          width: rect.width,
-          height: rect.height,
-        },
-        range,
-      });
     }, DEBOUNCE_MS);
   }
 
@@ -596,7 +607,7 @@ const CRASelectionToolbar = (() => {
     if (!currentSelection) return;
     navigator.clipboard.writeText(currentSelection.text).then(() => {
       showToast('已複製');
-    });
+    }).catch(() => showToast('複製失敗'));
     hide();
   }
 
@@ -605,7 +616,7 @@ const CRASelectionToolbar = (() => {
     const md = extractMarkdownFromSelection();
     navigator.clipboard.writeText(md).then(() => {
       showToast('已複製 Markdown');
-    });
+    }).catch(() => showToast('複製失敗'));
     hide();
   }
 
@@ -968,7 +979,7 @@ const CRACitationClipboard = (() => {
       const text = selected.map((q) => quoteBlock(q.text)).join('\n');
       navigator.clipboard.writeText(text).then(() =>
         showToast(`已複製 ${selected.length} 段引文`)
-      );
+      ).catch(() => showToast('複製失敗'));
     });
     panel.querySelector('[data-action="insert-all"]').addEventListener('click', () => {
       const selected = getSelectedQuotes();
@@ -1219,10 +1230,13 @@ const ChatGPTReadingAssistant = (() => {
 
   async function onSettingsUpdate(newSettings) {
     settings = await CRAStorage.saveSettings(newSettings);
-    CRAModuleRegistry.updateAll(settings);
 
     if (!settings.extensionEnabled) {
       CRAModuleRegistry.destroyAll();
+    } else {
+      // Re-init all modules (each module's init is idempotent)
+      CRAModuleRegistry.initAll(settings);
+      CRAModuleRegistry.updateAll(settings);
     }
   }
 
