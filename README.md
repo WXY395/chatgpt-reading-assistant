@@ -5,8 +5,8 @@
 <h1 align="center">ChatGPT Reading Assistant</h1>
 
 <p align="center">
-  <strong>Stop losing insights buried in long ChatGPT conversations.</strong><br>
-  Select, collect, and reuse any text — without leaving the chat.
+  <strong>ChatGPT 很會回答。但你很難重用那些答案。</strong><br>
+  選取、收藏、一鍵追問 — 不用離開對話頁面。
 </p>
 
 <p align="center">
@@ -27,57 +27,51 @@
 
 ---
 
-## The Problem
+## 你一定遇過這些情況
 
-ChatGPT gives you long, rich responses — but **there's no built-in way to collect, compare, or reuse specific parts** of a conversation.
+ChatGPT 給了你一篇 2000 字的回答。你讀完了。然後呢？
 
-You end up:
-- Manually copying text back and forth
-- Losing track of key points across a 50+ message thread
-- Retyping "explain this" or "give me examples" over and over
-- Switching between tabs just to save a useful snippet
+- 你**滾回去找**那句關鍵的話，但已經被埋在第 37 則訊息裡
+- 你想追問某一段，卻得**手動複製貼上**再打「請解釋這段」
+- 你跟 AI 聊了 50 則，結束後才發現**真正有用的只有 3 句**，但你忘了是哪 3 句
+- 你開了 5 個對話，每個都有一點有用的東西，但**沒有任何工具幫你整理**
 
-**CRA fixes this.** It adds a native-feeling layer on top of ChatGPT that makes reading, collecting, and interacting with AI responses seamless.
+你不是不會用 ChatGPT。你是缺一個**閱讀層**。
 
-## Features
+這不是資訊過多的問題。這是你沒有工具「重用資訊」的問題。
 
-### Selection Toolbar
-Select any text in a conversation → a floating toolbar appears instantly.
+## 有 CRA vs 沒有 CRA
 
-| Action | What it does |
-|--------|-------------|
-| 📌 **Collect** | Save to citation clipboard (multi-snippet) |
-| 💡 **Explain** | Insert "Explain this..." prompt into input box |
-| ✂️ **Simplify** | Insert "Simplify this..." prompt |
-| 📎 **Examples** | Insert "Give examples of..." prompt |
-| 📊 **Key Points** | Insert "Summarize key points..." prompt |
-| 📋 **Copy** | Copy as plain text |
-| 📝 **MD** | Copy as Markdown (preserves formatting) |
+| 場景 | ❌ 沒有 CRA | ✅ 有 CRA |
+|------|------------|----------|
+| 想追問某一段 | 複製 → 貼上 → 打「請解釋」→ 送出 | **選取 → 點一下「解釋」→ 完成** |
+| 收集重點 | 開記事本 → 手動複製 → 來回切換 | **選取 → 📌 收藏 → 自動累積** |
+| 引用多段內容追問 | 一段一段複製，手動排版 | **勾選想要的 → 一鍵插入輸入框** |
+| 找回之前看到的那句話 | 無限滾動，靠記憶 | **打開引文面板，全部都在** |
+| 複製程式碼區塊 | 格式跑掉，要手動修 | **📝 MD 一鍵複製，格式完整保留** |
 
-<!-- TODO: Replace with actual screenshot -->
+## 它能幫你做什麼
+
+### 📌 選完就收藏，讀完不會忘
+看到重要的句子？選取它，點一下收藏，**立即保存**。繼續讀。所有收藏的片段會自動累積在側邊面板，不怕忘、不怕丟。
+
 <!-- ![Selection Toolbar](docs/screenshots/toolbar.png) -->
 
-### Citation Clipboard
-Collect multiple text snippets across a conversation and manage them in a side panel:
+### 💡 一鍵追問，不用打字
+選取一段看不懂的內容，點「解釋」— 系統自動把提示詞填進輸入框。你只需要按 Enter。同樣適用於「簡化」「舉例」「整理要點」。
 
-- **Multi-select** — Check only the quotes you want to insert or copy
-- **Auto-deduplication** — Identical quotes are automatically skipped
-- **Persistent** — Quotes survive page reloads and navigation
-- **One-click insert** — Inserts all selected quotes into the input box, framed as a reference prompt
+### 📋 多段引用，一次搞定
+收藏了 5 段內容？勾選你要的，點「插入」— 全部引文自動整理好，放進輸入框，附帶上下文提示。不用一段一段複製。
 
-<!-- TODO: Replace with actual screenshot -->
 <!-- ![Citation Clipboard](docs/screenshots/citation-panel.png) -->
 
-### Quick Actions (No Typing Required)
-Select text → click an action → the prompt is auto-inserted into the input box, ready to send.
+### 🔒 你的資料只在你的電腦上
+零網路請求。零數據收集。零雲端同步。沒有任何第三方追蹤。沒有背景同步。你看到的就是全部。
 
-No more typing "please explain the following..." manually.
+原始碼 2,300 行，零依賴，你可以逐行審查。
 
-### Settings Panel
-- Toggle modules on/off — **takes effect instantly**, no page refresh
-- Preview collected quotes
-- Export quotes as JSON or Markdown
-- Built-in diagnostics
+### ⚙️ 即開即用的設定
+模組隨時開關 — **即時生效**，不用重新整理頁面。引文匯出為 JSON 或 Markdown。內建診斷工具。
 
 ## Demo
 
@@ -86,11 +80,13 @@ No more typing "please explain the following..." manually.
 
 > **Coming soon:** A 30-second demo GIF showing the full workflow.
 
-## Installation
+## 兩分鐘安裝，馬上開始用
+
+> 不需要帳號。不需要 API key。不需要付費。
 
 ### From Source (Developer Mode)
 
-**Time required: ~2 minutes**
+**所需時間：~2 分鐘**
 
 1. **Download** this repository
    ```bash
@@ -145,16 +141,16 @@ CRA requests the **minimum permissions** required:
 
 ## Privacy
 
-**CRA collects zero data. Period.**
+**CRA 不收集任何資料。句號。**
 
-- No analytics or telemetry
-- No external API calls
-- No data leaves your browser
-- No cloud sync
-- All quotes are stored in `chrome.storage.local` (on your machine only)
-- Full details: [PRIVACY.md](PRIVACY.md)
+- 零分析追蹤
+- 零外部 API 呼叫
+- 零資料離開你的瀏覽器
+- 零雲端同步
+- 所有引文存在 `chrome.storage.local`（僅在你的裝置上）
+- 完整隱私政策：[PRIVACY.md](PRIVACY.md)
 
-> **Why this matters:** Many Chrome extensions request broad permissions and send data to external servers. CRA is designed to be auditable — the entire codebase is ~2,300 lines of vanilla JavaScript with zero dependencies.
+> **為什麼這很重要：** 很多 Chrome 擴充功能會要求廣泛權限並把資料送到外部伺服器。CRA 的設計可供審計 — 整個程式碼庫只有 ~2,300 行 vanilla JavaScript，零依賴。沒有任何第三方追蹤。沒有背景同步。你看到的就是全部。
 
 ## Tech Stack
 
@@ -258,6 +254,10 @@ git clone https://github.com/user/chatgpt-reading-assistant.git
 [MIT](LICENSE) — Use it freely, commercially or personally.
 
 ---
+
+**如果你每天都在用 ChatGPT，卻還在手動複製貼上，你其實在浪費時間。**
+
+⭐ 如果覺得有用，請給個 Star — 這是開源專案最重要的燃料。
 
 <p align="center">
   <sub>Built for people who read ChatGPT conversations seriously.</sub>
