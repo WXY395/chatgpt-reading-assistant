@@ -145,6 +145,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!confirm(`確定要清除全部 ${quotes.length} 條引文嗎？此操作無法還原。`)) return;
     await chrome.storage.local.remove(QUOTES_KEY);
     renderQuotePreview();
+    // Notify content script to refresh citation panel
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: 'CRA_QUOTES_CLEARED' });
+      }
+    });
   });
 
   // ── Diagnostics ──

@@ -892,10 +892,6 @@ const CRACitationClipboard = (() => {
     const trimmed = text.trim();
     if (!trimmed) return;
     if (quotes.some((q) => q.text === trimmed)) {
-      CRASelectionToolbar.showToast
-        ? null
-        : console.log('[CRA] Duplicate quote skipped');
-      // Show toast via a simple emit
       showToast('引文已存在');
       return;
     }
@@ -1105,7 +1101,7 @@ const CRACitationClipboard = (() => {
     return { enabled, visible, quoteCount: quotes.length };
   }
 
-  return { init, update, destroy, getDiagnostics, addQuote, show, hide, toggle };
+  return { init, update, destroy, getDiagnostics, addQuote, loadQuotes, show, hide, toggle };
 })();
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1208,6 +1204,12 @@ const ChatGPTReadingAssistant = (() => {
       case 'CRA_INSERT_TEXT':
         const success = CRAInputIntegration.insertText(message.text, message.append);
         sendResponse({ success });
+        break;
+
+      case 'CRA_QUOTES_CLEARED':
+        // Popup cleared all quotes — reload citation panel
+        CRACitationClipboard.loadQuotes && CRACitationClipboard.loadQuotes();
+        sendResponse({ success: true });
         break;
 
       case 'CRA_SCAN_MESSAGES':
