@@ -1,82 +1,208 @@
 /* ChatGPT Reading Assistant — Content Styles */
 
+/* ── CSS Variables (theme-aware) ── */
+html[class*="dark"] {
+  --cra-toolbar-bg: #2f2f2f;
+  --cra-toolbar-fg: #e0e0e0;
+  --cra-toolbar-hover: rgba(255, 255, 255, 0.12);
+  --cra-separator-color: rgba(255, 255, 255, 0.15);
+  --cra-panel-bg: #1e1e1e;
+  --cra-panel-fg: #e0e0e0;
+  --cra-toast-bg: #333;
+  --cra-toast-fg: #fff;
+  --cra-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+html:not([class*="dark"]) {
+  --cra-toolbar-bg: #ffffff;
+  --cra-toolbar-fg: #1a1a1a;
+  --cra-toolbar-hover: rgba(0, 0, 0, 0.07);
+  --cra-separator-color: rgba(0, 0, 0, 0.12);
+  --cra-panel-bg: #ffffff;
+  --cra-panel-fg: #1a1a1a;
+  --cra-toast-bg: #333;
+  --cra-toast-fg: #fff;
+  --cra-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
 /* ── CRA Namespace ── */
 .cra-hidden {
   display: none !important;
 }
 
-/* ── Selection highlight (future) ── */
 [data-cra-index] {
   /* marker for scanned messages, no visual change */
 }
 
-/* ── Floating toolbar placeholder ── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Selection Toolbar
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .cra-selection-toolbar {
-  position: fixed;
+  position: absolute;
   z-index: 10000;
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: var(--cra-toolbar-bg, #2f2f2f);
-  color: var(--cra-toolbar-fg, #fff);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  gap: 2px;
+  padding: 4px 6px;
+  border-radius: 10px;
+  background: var(--cra-toolbar-bg);
+  color: var(--cra-toolbar-fg);
+  box-shadow: var(--cra-shadow);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 13px;
   line-height: 1;
-  pointer-events: auto;
+  pointer-events: none;
   user-select: none;
   opacity: 0;
-  transform: translateY(4px);
+  transform: translateY(4px) scale(0.96);
   transition: opacity 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
 }
 
 .cra-selection-toolbar.cra-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
 
-.cra-selection-toolbar button {
+.cra-toolbar-btn {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 5px 10px;
+  padding: 6px 10px;
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
   background: transparent;
   color: inherit;
   font-size: 13px;
+  font-family: inherit;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.1s;
+  transition: background 0.12s ease;
 }
 
-.cra-selection-toolbar button:hover {
-  background: rgba(255, 255, 255, 0.15);
+.cra-toolbar-btn:hover {
+  background: var(--cra-toolbar-hover);
 }
 
-.cra-selection-toolbar .cra-separator {
+.cra-toolbar-btn:active {
+  background: var(--cra-toolbar-hover);
+  transform: scale(0.97);
+}
+
+.cra-btn-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.cra-btn-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cra-separator {
   width: 1px;
-  height: 16px;
-  background: rgba(255, 255, 255, 0.2);
+  height: 18px;
+  background: var(--cra-separator-color);
   margin: 0 2px;
+  flex-shrink: 0;
 }
 
-/* ── Citation clipboard panel placeholder ── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Toast Notification
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cra-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  z-index: 10001;
+  padding: 8px 18px;
+  border-radius: 8px;
+  background: var(--cra-toast-bg);
+  color: var(--cra-toast-fg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.cra-toast.cra-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Citation Toggle Button
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cra-citation-toggle {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: var(--cra-toolbar-bg);
+  color: var(--cra-toolbar-fg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.cra-citation-toggle:hover {
+  background: var(--cra-toolbar-hover);
+}
+
+.cra-citation-toggle.cra-active {
+  background: var(--cra-toolbar-hover);
+}
+
+.cra-citation-toggle-icon {
+  font-size: 16px;
+}
+
+.cra-citation-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: #10a37f;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Citation Clipboard Panel
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .cra-citation-panel {
   position: fixed;
-  top: 80px;
-  right: 16px;
-  width: 320px;
+  top: 48px;
+  right: 12px;
+  width: 340px;
   max-height: calc(100vh - 120px);
   z-index: 9999;
   border-radius: 12px;
-  background: var(--cra-panel-bg, #1e1e1e);
-  color: var(--cra-panel-fg, #e0e0e0);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  background: var(--cra-panel-bg);
+  color: var(--cra-panel-fg);
+  box-shadow: var(--cra-shadow);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 13px;
   opacity: 0;
   transform: translateX(20px);
@@ -90,39 +216,140 @@
   pointer-events: auto;
 }
 
-/* ── Light theme overrides ── */
-@media (prefers-color-scheme: light) {
-  :root {
-    --cra-toolbar-bg: #ffffff;
-    --cra-toolbar-fg: #1a1a1a;
-    --cra-panel-bg: #ffffff;
-    --cra-panel-fg: #1a1a1a;
-  }
-
-  .cra-selection-toolbar {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  .cra-selection-toolbar button:hover {
-    background: rgba(0, 0, 0, 0.08);
-  }
-
-  .cra-selection-toolbar .cra-separator {
-    background: rgba(0, 0, 0, 0.15);
-  }
+/* Panel header */
+.cra-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cra-separator-color);
+  flex-shrink: 0;
 }
 
-/* ChatGPT dark theme detection via body/html class */
-html[class*="dark"] {
-  --cra-toolbar-bg: #2f2f2f;
-  --cra-toolbar-fg: #ffffff;
-  --cra-panel-bg: #1e1e1e;
-  --cra-panel-fg: #e0e0e0;
+.cra-panel-title {
+  font-weight: 600;
+  font-size: 13px;
 }
 
-html:not([class*="dark"]) {
-  --cra-toolbar-bg: #ffffff;
-  --cra-toolbar-fg: #1a1a1a;
-  --cra-panel-bg: #ffffff;
-  --cra-panel-fg: #1a1a1a;
+.cra-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cra-panel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.cra-panel-btn:hover {
+  background: var(--cra-toolbar-hover);
+}
+
+.cra-btn-danger:hover {
+  background: rgba(255, 80, 80, 0.15);
+  color: #ff5050;
+}
+
+/* Quote list */
+.cra-panel-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.cra-panel-empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: #888;
+  font-size: 12px;
+}
+
+/* Individual quote item */
+.cra-quote-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  background: var(--cra-toolbar-hover);
+  transition: background 0.12s;
+}
+
+.cra-quote-item:hover {
+  background: var(--cra-separator-color);
+}
+
+.cra-quote-check {
+  flex-shrink: 0;
+  padding-top: 2px;
+  cursor: pointer;
+}
+
+.cra-quote-checkbox {
+  width: 15px;
+  height: 15px;
+  accent-color: #10a37f;
+  cursor: pointer;
+}
+
+.cra-quote-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.cra-quote-text {
+  font-size: 12px;
+  line-height: 1.5;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cra-quote-actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.cra-quote-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 20px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: background 0.12s, opacity 0.12s;
+}
+
+.cra-quote-item:hover .cra-quote-btn {
+  opacity: 1;
+}
+
+.cra-quote-btn:hover {
+  background: var(--cra-toolbar-hover);
+}
+
+.cra-quote-btn.cra-btn-danger:hover {
+  background: rgba(255, 80, 80, 0.15);
+  color: #ff5050;
 }
