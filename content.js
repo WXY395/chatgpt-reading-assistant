@@ -518,6 +518,8 @@ const CRASelectionTracker = (() => {
 const ChatGPTReadingAssistant = (() => {
   let settings = null;
   let initialized = false;
+  let lastUrl = '';
+  let navigationObserver = null;
 
   function isSupportedPage() {
     const host = window.location.hostname;
@@ -552,11 +554,42 @@ const ChatGPTReadingAssistant = (() => {
     // Listen for settings updates from popup
     chrome.runtime.onMessage.addListener(handleMessage);
 
-    // Log diagnostics
-    logDiagnostics();
+    // Watch for SPA navigation (ChatGPT is a SPA — URL changes without page reload)
+    lastUrl = window.location.href;
+    startNavigationWatch();
+
+    // Log diagnostics after a short delay to let React render
+    setTimeout(() => logDiagnostics(), 1500);
 
     initialized = true;
     console.log('[CRA] Initialization complete');
+  }
+
+  /**
+   * Watch for SPA navigation by monitoring URL changes.
+   * When URL changes, re-scan messages and re-attach observers.
+   */
+  function startNavigationWatch() {
+    // Method 1: Listen for popstate (back/forward)
+    window.addEventListener('popstate', onNavigate);
+
+    // Method 2: Observe DOM changes in <title> or use polling as fallback
+    // ChatGPT uses pushState for navigation, which doesn't fire popstate
+    navigationObserver = setInterval(() => {
+      if (window.location.href !== lastUrl) {
+        lastUrl = window.location.href;
+        onNavigate();
+      }
+    }, 500);
+  }
+
+  function onNavigate() {
+    console.log('[CRA] Navigation detected:', window.location.href);
+    // Re-initialize message scanner (re-attach observer to new container)
+    setTimeout(() => {
+      CRAMessageScanner.update();
+      console.log('[CRA] Post-navigation rescan:', CRAMessageScanner.getMessageCount(), 'messages');
+    }, 800);
   }
 
   function handleMessage(message, sender, sendResponse) {
@@ -623,6 +656,11 @@ const ChatGPTReadingAssistant = (() => {
   function destroy() {
     CRAModuleRegistry.destroyAll();
     chrome.runtime.onMessage.removeListener(handleMessage);
+    window.removeEventListener('popstate', onNavigate);
+    if (navigationObserver) {
+      clearInterval(navigationObserver);
+      navigationObserver = null;
+    }
     initialized = false;
   }
 
