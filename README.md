@@ -55,15 +55,17 @@ ChatGPT 給了你一篇 2000 字的回答。你讀完了。然後呢？
 ### 📌 選完就收藏，讀完不會忘
 看到重要的句子？選取它，點一下收藏，**立即保存**。繼續讀。所有收藏的片段會自動累積在側邊面板，不怕忘、不怕丟。
 
-<!-- ![Selection Toolbar](docs/screenshots/toolbar.png) -->
+![Selection Toolbar](docs/screenshots/toolbar.png)
 
 ### 💡 一鍵追問，不用打字
 選取一段看不懂的內容，點「解釋」— 系統自動把提示詞填進輸入框。你只需要按 Enter。同樣適用於「簡化」「舉例」「整理要點」。
 
+![One-click Action](docs/screenshots/one-click-action.png)
+
 ### 📋 多段引用，一次搞定
 收藏了 5 段內容？勾選你要的，點「插入」— 全部引文自動整理好，放進輸入框，附帶上下文提示。不用一段一段複製。
 
-<!-- ![Citation Clipboard](docs/screenshots/citation-panel.png) -->
+![Citation Clipboard](docs/screenshots/citation-panel.png)
 
 ### 🔒 你的資料只在你的電腦上
 零網路請求。零數據收集。零雲端同步。沒有任何第三方追蹤。沒有背景同步。你看到的就是全部。
@@ -73,16 +75,17 @@ ChatGPT 給了你一篇 2000 字的回答。你讀完了。然後呢？
 ### ⚙️ 即開即用的設定
 模組隨時開關 — **即時生效**，不用重新整理頁面。引文匯出為 JSON 或 Markdown。內建診斷工具。
 
-## Demo
-
-<!-- TODO: Replace with actual GIF -->
-<!-- ![Demo GIF](docs/screenshots/demo.gif) -->
-
-> **Coming soon:** A 30-second demo GIF showing the full workflow.
+![Settings](docs/screenshots/settings.png)
 
 ## 兩分鐘安裝，馬上開始用
 
 > 不需要帳號。不需要 API key。不需要付費。
+
+### From Chrome Web Store
+
+> 🔄 **審核中** — 正在等待 Chrome Web Store 審核通過。審核通過後這裡會更新安裝連結。
+>
+> 目前可透過下方「From Source」方式安裝。
 
 ### From Source (Developer Mode)
 
@@ -90,7 +93,7 @@ ChatGPT 給了你一篇 2000 字的回答。你讀完了。然後呢？
 
 1. **Download** this repository
    ```bash
-   git clone https://github.com/user/chatgpt-reading-assistant.git
+   git clone https://github.com/WXY395/chatgpt-reading-assistant.git
    ```
    Or click **Code → Download ZIP** and unzip.
 
@@ -105,9 +108,6 @@ ChatGPT 給了你一篇 2000 字的回答。你讀完了。然後呢？
 4. **Open ChatGPT**
    - Go to [chatgpt.com](https://chatgpt.com)
    - Select any text in a conversation — the toolbar appears!
-
-<!-- ### From Chrome Web Store -->
-<!-- > **Coming soon** — CRA is currently in review for the Chrome Web Store. -->
 
 ## Usage
 
@@ -148,7 +148,7 @@ CRA requests the **minimum permissions** required:
 - 零資料離開你的瀏覽器
 - 零雲端同步
 - 所有引文存在 `chrome.storage.local`（僅在你的裝置上）
-- 完整隱私政策：[PRIVACY.md](PRIVACY.md)
+- 完整隱私政策：[Privacy Policy](https://wxy395.github.io/chatgpt-reading-assistant/legal/PRIVACY)
 
 > **為什麼這很重要：** 很多 Chrome 擴充功能會要求廣泛權限並把資料送到外部伺服器。CRA 的設計可供審計 — 整個程式碼庫只有 ~2,300 行 vanilla JavaScript，零依賴。沒有任何第三方追蹤。沒有背景同步。你看到的就是全部。
 
@@ -244,7 +244,6 @@ Yes, as long as you access ChatGPT via chatgpt.com in Chrome.
 - Cross-conversation quote management
 - Quote tagging and categorization
 - Keyboard shortcuts
-- Chrome Web Store publication
 
 ## Contributing
 
@@ -252,7 +251,7 @@ Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for setup inst
 
 Quick start:
 ```bash
-git clone https://github.com/user/chatgpt-reading-assistant.git
+git clone https://github.com/WXY395/chatgpt-reading-assistant.git
 # Load unpacked in chrome://extensions/
 # Make changes → reload extension → test on chatgpt.com
 ```
