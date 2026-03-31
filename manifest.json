@@ -6,8 +6,7 @@
   "permissions": ["storage"],
   "host_permissions": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
   "background": {
-    "service_worker": "background.js",
-    "type": "module"
+    "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
