@@ -67,7 +67,7 @@ If this policy changes, the updated version will be published at this URL with a
 ## Contact
 
 If you have questions about this privacy policy, please open an issue at:
-**https://github.com/[YOUR-USERNAME]/chatgpt-enhancement/issues**
+**https://github.com/WXY395/chatgpt-reading-assistant/issues**
 
 ---
 
